@@ -8,21 +8,19 @@ const dayjs = require('dayjs');
 // @route   GET /api/schedules
 // @access  Private
 const getAllSchedules = asyncHandler(async (req, res) => {
-  const schedule = await ScheduleHeader.find();
+  const q = req.query;
 
-  res.status(200).json(schedule);
-});
+  if (q.date) {
+    const schedule = await ScheduleHeader.findOne({ date: q.date }).populate('details');
+    if (!schedule) {
+      res.status(404);
+      throw new Error('Schedule Not Found');
+    }
 
-// @desc    Get schedules by date
-// @route   GET /api/schedules/:id
-// @access  Private
-const getSchedulesByDate = asyncHandler(async (req, res) => {
-  const schedule = await ScheduleHeader.findById(req.params.id).populate('details');
-  if (!schedule) {
-    res.status(404);
-    throw new Error('Schedule Not Found');
+    return res.status(200).json(schedule);
   }
 
+  const schedule = await ScheduleHeader.find();
   res.status(200).json(schedule);
 });
 
@@ -39,16 +37,6 @@ const getMySchedules = asyncHandler(async (req, res) => {
     },
   });
 
-  // const sortedScheduleByDate = [...user.scheduleID].sort((a, b) => {
-  //   return new Date(a.headerID.date) - new Date(b.headerID.date);
-  // });
-
-  // const sortedScheduleByHour = sortedScheduleByDate.sort((a, b) => {
-  //   return parseInt(b.hourStart.substr(0, 2)) - parseInt(a.hourStart.substr(0, 2));
-  // });
-
-  // console.log(sortedScheduleByHour);
-
   const sortedScheduleByDate = [...user.scheduleID].sort((a, b) => {
     const dayA = dayjs(new Date(a.headerID.date)).hour(parseInt(a.hourStart.substr(0, 2)));
     const dayB = dayjs(new Date(b.headerID.date)).hour(parseInt(b.hourStart.substr(0, 2)));
@@ -58,9 +46,7 @@ const getMySchedules = asyncHandler(async (req, res) => {
     else return -1;
   });
 
-  console.log(sortedScheduleByDate);
-
-  res.status(200).json('HELOOOO');
+  res.status(200).json(sortedScheduleByDate);
 });
 
 // @desc    Attend class
@@ -217,7 +203,6 @@ const deleteSchedule = asyncHandler(async (req, res) => {
 
 module.exports = {
   getAllSchedules,
-  getSchedulesByDate,
   getMySchedules,
   attendClass,
   postSchedule,

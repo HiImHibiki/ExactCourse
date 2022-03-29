@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const {
   getAllSchedules,
-  getSchedulesByDate,
   getMySchedules,
   attendClass,
   postSchedule,
@@ -13,7 +12,7 @@ const { protect } = require('../middleware/authMiddleware');
 
 router.route('/').get(protect, getAllSchedules);
 router.route('/myclass/').get(protect, getMySchedules);
-router.route('/:id').get(protect, getSchedulesByDate).put(protect, attendClass);
+router.route('/:id').put(protect, attendClass);
 
 router.route('/admin/').post(postSchedule);
 router.route('/admin/:id').put(updateSchedule).delete(deleteSchedule);

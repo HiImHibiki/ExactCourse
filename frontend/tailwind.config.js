@@ -5,7 +5,16 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        serif: ['Bree Serif', ...defaultTheme.fontFamily.serif],
+        sans: ['Josefin Sans', ...defaultTheme.fontFamily.sans],
+        roboto: ['Roboto', ...defaultTheme.fontFamily.sans],
+        sen: ['Sen', ...defaultTheme.fontFamily.sans],
+      },
+      colors: {
+        'green-primary': '#19C880',
+        'green-secondary': '#00FF96',
+        'green-tri': '#2EFFA9',
+        'ash-gray': '#5D6072',
+        'black-greenish-faded': '#002717',
       },
     },
   },

@@ -93,7 +93,7 @@ const addAttendance = asyncHandler(async (req, res) => {
     $inc: { remainingClass: req.body.attendanceQty },
   });
 
-  res.status(200).json(updatedUser);
+  res.status(200).json({ message: `${req.body.attendanceQty} attendance added` });
 });
 
 // Generate JWT

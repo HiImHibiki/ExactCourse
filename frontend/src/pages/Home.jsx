@@ -1,11 +1,16 @@
 import React from 'react';
+import Featured from '../components/Featured';
+import CourseCategory from '../components/CourseCategory';
+import Testimony from '../components/Testimony';
+import MoreAboutUs from '../components/MoreAboutUs';
 
 const Home = () => {
   return (
     <>
-      <section>
-        <h1>HAHAHAHAHA</h1>
-      </section>
+      <Featured />
+      <CourseCategory />
+      <Testimony />
+      <MoreAboutUs />
     </>
   );
 };

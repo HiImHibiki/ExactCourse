@@ -4,7 +4,7 @@ const { ScheduleHeader, ScheduleDetail } = require('../models/scheduleModel');
 const User = require('../models/userModel');
 const dayjs = require('dayjs');
 
-// @desc    Get all schedules
+// @desc    Get all schedules & by date
 // @route   GET /api/schedules
 // @access  Private
 const getAllSchedules = asyncHandler(async (req, res) => {
@@ -70,28 +70,30 @@ const attendClass = asyncHandler(async (req, res) => {
     throw new Error('Class is full');
   }
 
-  for (const s of schedule.studentsID) {
-    const st = await User.find({ _id: s });
-    if (st) {
+  schedule.studentsID.forEach((s) => {
+    if (String(s) == String(req.user._id)) {
       res.status(400);
       throw new Error('You already booked');
     }
-  }
+  });
 
-  const updatedSchedule = await ScheduleDetail.findByIdAndUpdate(
+  await ScheduleDetail.findByIdAndUpdate(
     { _id: req.params.id },
     {
       $push: { studentsID: req.user._id },
       $inc: { studentCount: 1 },
     }
   );
-  const updatedUsers = await User.findByIdAndUpdate(
+  await User.findByIdAndUpdate(
     { _id: req.user._id },
     {
       $push: { scheduleID: req.params.id },
     }
   );
-  console.log(schedule, req.user._id);
+
+  const updatedSchedule = await ScheduleDetail.findById(req.params.id);
+  const updatedUsers = await User.findById(req.user._id);
+  // console.log(schedule, req.user._id);
   res.status(200).json({ updatedSchedule, updatedUsers });
 });
 

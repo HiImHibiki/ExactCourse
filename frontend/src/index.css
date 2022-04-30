@@ -46,3 +46,25 @@ h5 {
 li {
   cursor: pointer;
 }
+
+.box-shadow {
+  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.5);
+}
+
+.log-reg-container {
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 0;
+  align-items: center;
+  width: 500px;
+  /* height: 474px; */
+  left: 470px;
+  top: 296px;
+
+  background: #ffffff;
+  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.5);
+}
+
+.height-template {
+  height: 1024px;
+}

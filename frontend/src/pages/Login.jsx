@@ -10,18 +10,18 @@ const Login = () => {
           <h4 className="font-sen text-ash-gray">Log in to your account</h4>
           <h2 className="font-sen text-ash-gray">Welcome to ExactCourse</h2>
         </div>
-        <form class="flex flex-col items-center font-sans">
-          <div class="mb-4">
+        <form className="flex flex-col items-center font-sans">
+          <div className="mb-4">
             <input
-              class="focus:shadow-outline w-80 appearance-none rounded border py-4 px-5 leading-tight text-gray-700 shadow focus:outline-none"
+              className="focus:shadow-outline w-80 appearance-none rounded border py-4 px-5 leading-tight text-gray-700 shadow focus:outline-none"
               id="email"
               type="text"
               placeholder="Email"
             />
           </div>
-          <div class="mb-6">
+          <div className="mb-6">
             <input
-              class="focus:shadow-outline mb-5 w-80 appearance-none rounded border py-4 px-5 leading-tight text-gray-700 shadow focus:outline-none"
+              className="focus:shadow-outline mb-5 w-80 appearance-none rounded border py-4 px-5 leading-tight text-gray-700 shadow focus:outline-none"
               id="password"
               type="password"
               placeholder="Password"

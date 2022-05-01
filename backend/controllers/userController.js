@@ -1,8 +1,8 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const asyncHandler = require('express-async-handler');
-const User = require('../models/userModel');
-const { registerValidation } = require('../utils/validation');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const asyncHandler = require("express-async-handler");
+const User = require("../models/userModel");
+const { registerValidation } = require("../utils/validation");
 
 // @desc    Register a new user
 // @route   POST /api/users
@@ -14,13 +14,15 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error(error.details[0].message);
   }
 
-  const { name, phoneNumber, email, password } = req.body;
+  // TODO: referralCode nya buat apa?
+  const { name, phoneNumber, email, password, dob, gender, referralCode } =
+    req.body;
 
   // Check if user exist
   const userExist = await User.findOne({ email });
   if (userExist) {
     res.status(400);
-    throw new Error('User already exist');
+    throw new Error("User already exist");
   }
 
   // Hash password
@@ -33,7 +35,9 @@ const registerUser = asyncHandler(async (req, res) => {
     phoneNumber,
     email,
     password: hashedPassword,
-    role: 'Member',
+    gender,
+    dob,
+    role: "Member",
   });
   if (user) {
     res.status(200).json({
@@ -41,11 +45,13 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       phone: user.phoneNumber,
       email: user.email,
+      gender: user.gender,
+      dob: user.dob,
       token: generateToken(user._id),
     });
   } else {
     res.status(400);
-    throw new Error('Invalid user data');
+    throw new Error("Invalid user data");
   }
 });
 
@@ -68,7 +74,7 @@ const loginUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(400);
-    throw new Error('Invalid credentials');
+    throw new Error("Invalid credentials");
   }
 });
 
@@ -86,20 +92,22 @@ const addAttendance = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
   if (!user) {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 
   const updatedUser = await User.findByIdAndUpdate(req.user._id, {
     $inc: { remainingClass: req.body.attendanceQty },
   });
 
-  res.status(200).json({ message: `${req.body.attendanceQty} attendance added` });
+  res
+    .status(200)
+    .json({ message: `${req.body.attendanceQty} attendance added` });
 });
 
 // Generate JWT
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '30d',
+    expiresIn: "30d",
   });
 };
 

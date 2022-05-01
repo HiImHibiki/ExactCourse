@@ -6,23 +6,20 @@ import RegStep2 from "../components/RegStep2";
 import { register, reset } from "../features/auth/authSlice";
 // import { Link } from 'react-router-dom';
 
-// FIXME: ini harus taroh di some sort of context
-// jadi setelah user register gabisa lagi neken tombol register
-// karena data nya dah ada di local storage
 const Register = () => {
-  // TODO: tambahin sesuai keinginanya, sesuai dengan backend
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
+    dob: "",
+    gender: "",
     phoneNumber: "",
+    referralCode: "",
   });
   const [step, setStep] = useState(1);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // divide form data into steps
-  const { name, email, password, phoneNumber } = formData;
 
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
@@ -33,6 +30,8 @@ const Register = () => {
       alert(message);
     }
 
+    // TODO: ini lebih tepatnya bukan redirect ke homepage, tapi ke page dashboard
+    // dimana dashboard bakalan check apakah user udah ada di local storage atau belum
     if (isSuccess || user) {
       navigate("/");
     }
@@ -50,15 +49,14 @@ const Register = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    // TODO: validation
-    // validasi nya bisa difront end atau di backend
-    // terserah mau dimana
-    const userData = {
-      name,
-      password,
-      email,
-      phoneNumber,
-    };
+    const isSamePassword = formData.password === formData.confirmPassword;
+
+    if (!isSamePassword) {
+      alert("Password and Confirm Password must be same");
+      return;
+    }
+
+    const { confirmPassword, ...userData } = formData;
 
     dispatch(register(userData));
   };

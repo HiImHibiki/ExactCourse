@@ -1,67 +1,89 @@
-import React, { useState } from 'react';
-import RegStep1 from '../components/RegStep1';
-import RegStep2 from '../components/RegStep2';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import RegStep1 from "../components/RegStep1";
+import RegStep2 from "../components/RegStep2";
+import { register, reset } from "../features/auth/authSlice";
 // import { Link } from 'react-router-dom';
 
 const Register = () => {
-  const [data, setData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    phoneNumber: '',
-    birthday: new Date(),
-    gender: '',
-    referralCode: '',
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    dob: "",
+    gender: "",
+    phoneNumber: "",
+    referralCode: "",
   });
-  const [currentForm, setCurrentForm] = useState(1);
+  const [step, setStep] = useState(1);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const { name, email, password, confirmPassword, phoneNumber, birthday, gender, referralCode } =
-    data;
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
 
-  const onChange = (e) => {
-    setData((prevState) => ({
+  useEffect(() => {
+    if (isError) {
+      alert(message);
+    }
+
+    // TODO: ini lebih tepatnya bukan redirect ke homepage, tapi ke page dashboard
+    // dimana dashboard bakalan check apakah user udah ada di local storage atau belum
+    if (isSuccess || user) {
+      navigate("/");
+    }
+
+    dispatch(reset);
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
+
+  const onChange = (propertyName) => (value) => {
+    setFormData((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value,
+      [propertyName]: value,
     }));
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
 
-    // TODO: dispatch react-redux
-    // TODO: validasi sisanya
-    console.log(data);
+    const isSamePassword = formData.password === formData.confirmPassword;
+
+    if (!isSamePassword) {
+      alert("Password and Confirm Password must be same");
+      return;
+    }
+
+    const { confirmPassword, ...userData } = formData;
+
+    dispatch(register(userData));
   };
 
   const nextStep = () => {
-    // TODO: validation
-
-    setCurrentForm((curr) => curr + 1);
+    setStep((prevState) => prevState + 1);
   };
+
+  const prevStep = () => {
+    setStep((prevState) => prevState - 1);
+  };
+
+  // TODO: create <Spinner /> component?
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="height-template flex  flex-col items-center justify-center bg-green-primary text-white">
       <h1 className="mb-10">Register</h1>
+
       <form onSubmit={onSubmit}>
-        {currentForm === 1 && (
-          <RegStep1
-            name={name}
-            email={email}
-            password={password}
-            confirmPassword={confirmPassword}
-            onChange={onChange}
-            handleClick={nextStep}
-          />
+        {step === 1 && (
+          <RegStep1 handleClick={nextStep} onChange={onChange} {...formData} />
         )}
-        {currentForm === 2 && (
-          <RegStep2
-            phoneNumber={phoneNumber}
-            birthday={birthday}
-            gender={gender}
-            referralCode={referralCode}
-            onChange={onChange}
-          />
+        {step === 2 && (
+          <RegStep2 handleClick={prevStep} onChange={onChange} {...formData} />
         )}
       </form>
     </div>

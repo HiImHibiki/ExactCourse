@@ -1,22 +1,30 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Please add a name'],
+      required: [true, "Please add a name"],
     },
     phoneNumber: {
       type: String,
-      required: [true, 'Please add a phone number'],
+      required: [true, "Please add a phone number"],
     },
     email: {
       type: String,
-      required: [true, 'Please add an email'],
+      required: [true, "Please add an email"],
     },
     password: {
       type: String,
-      required: [true, 'Please add a password'],
+      required: [true, "Please add a password"],
+    },
+    dob: {
+      type: Date,
+      required: [true, "Please add a date of birth"],
+    },
+    gender: {
+      type: String,
+      enum: ["male", "female"],
     },
     role: {
       type: String,
@@ -33,7 +41,7 @@ const userSchema = new mongoose.Schema(
     scheduleID: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'ScheduleDetail',
+        ref: "ScheduleDetail",
       },
     ],
   },
@@ -42,4 +50,4 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);

@@ -11,7 +11,7 @@ const getAllSchedules = asyncHandler(async (req, res) => {
   const q = req.query;
 
   if (q.date) {
-    const schedule = await ScheduleHeader.findOne({ date: q.date }).populate('details');
+    const schedule = await ScheduleHeader.find({ date: q.date }).populate('details');
     if (!schedule) {
       res.status(404);
       throw new Error('Schedule Not Found');
@@ -20,7 +20,7 @@ const getAllSchedules = asyncHandler(async (req, res) => {
     return res.status(200).json(schedule);
   }
 
-  const schedule = await ScheduleHeader.find();
+  const schedule = await ScheduleHeader.find().populate('details');
   res.status(200).json(schedule);
 });
 

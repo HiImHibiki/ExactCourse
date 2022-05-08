@@ -1,12 +1,18 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
+import DashboardTop from '../components/DashboardTop';
 import Sidebar from '../components/Sidebar';
 
 const Dashboard = () => {
   return (
     <>
-      <h1>dashh</h1>
-      <h2>board</h2>
-      <Sidebar />
+      <div className="grid grid-cols-[14rem_1fr]">
+        <Sidebar />
+        <div>
+          <DashboardTop />
+          <Outlet />
+        </div>
+      </div>
     </>
   );
 };

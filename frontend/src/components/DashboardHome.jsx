@@ -7,6 +7,7 @@ import badges from '../assets/exactbadges.png';
 import activity from '../assets/activitypoint.png';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const DashboardHome = () => {
   const [me, setMe] = useState(null);
@@ -45,17 +46,19 @@ const DashboardHome = () => {
         </div>
       </div>
       <div className="my-10 flex gap-3">
-        <div className="box-shadow flex h-[200px] w-[324px] items-center justify-center bg-[url('../src/assets/attendancebg.png')] bg-auto text-center">
-          <p className="font-sen text-xl text-white">
-            You have
-            <br />
-            <br />
-            <span className="text-4xl">{me && me.remainingClass}</span>
-            <br />
-            <br />
-            Attendances Remaining
-          </p>
-        </div>
+        <Link to="/dashboard/addattendance">
+          <div className="box-shadow flex h-[200px] w-[324px] items-center justify-center bg-[url('../src/assets/attendancebg.png')] bg-auto text-center">
+            <p className="font-sen text-xl text-white">
+              You have
+              <br />
+              <br />
+              <span className="text-4xl">{me && me.remainingClass}</span>
+              <br />
+              <br />
+              Attendances Remaining
+            </p>
+          </div>
+        </Link>
         <div className="flex">
           <img src={badges} alt="" />
         </div>

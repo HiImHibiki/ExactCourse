@@ -3,6 +3,7 @@ import scheduleService from './scheduleService';
 
 const initialState = {
   schedules: [],
+  mySchedules: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -14,6 +15,20 @@ export const getSchedules = createAsyncThunk('schedules/getAll', async (date = '
   try {
     const token = thunkAPI.getState().auth.user.token;
     return await scheduleService.getAllSchedules(token, date);
+  } catch (error) {
+    const message =
+      (error.response && error.response.data & error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
+// Get my schedules
+export const getMySchedules = createAsyncThunk('schedules/getMySchedules', async (_, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().auth.user.token;
+    return await scheduleService.getMySchedules(token);
   } catch (error) {
     const message =
       (error.response && error.response.data & error.response.data.message) ||
@@ -43,6 +58,23 @@ export const scheduleSlice = createSlice({
         state.schedules = action.payload;
       })
       .addCase(getSchedules.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload;
+      })
+      .addCase(getMySchedules.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.isSuccess = false;
+      })
+      .addCase(getMySchedules.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.mySchedules = action.payload;
+      })
+      .addCase(getMySchedules.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;

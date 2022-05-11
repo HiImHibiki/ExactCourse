@@ -18,8 +18,20 @@ const getAllSchedules = async (token, date) => {
   return response.data;
 };
 
+const getMySchedules = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.get(API_URL + 'myclass', config);
+  return response.data;
+};
+
 const scheduleService = {
   getAllSchedules,
+  getMySchedules,
 };
 
 export default scheduleService;

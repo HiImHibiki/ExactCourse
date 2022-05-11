@@ -1,5 +1,4 @@
-import dayjs from 'dayjs';
-import * as isToday from 'dayjs/plugin/isToday';
+import dayjs from '../dayjsSetup';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import LeftButton from '../assets/LeftButton.png';
@@ -9,8 +8,7 @@ import ScheduleItem from './ScheduleItem';
 import Spinner from './Spinner';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-
-dayjs.extend(isToday);
+import axios from 'axios';
 
 const ScheduleList = () => {
   const [value, setValue] = useState(new Date());
@@ -18,6 +16,7 @@ const ScheduleList = () => {
   // const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { user } = useSelector((state) => state.auth);
   const { schedules, isLoading, isError, message } = useSelector((state) => state.schedule);
 
   useEffect(() => {
@@ -48,6 +47,20 @@ const ScheduleList = () => {
 
   const handlePrev = () => {
     setValue((prevDate) => dayjs(prevDate).subtract(1, 'day').toDate());
+  };
+
+  // @desc    Attend class
+  // @route   PUT /api/schedules/
+  // @access  Private
+  const handleAttendClass = async (_id) => {
+    const headers = {
+      Authorization: `Bearer ${user.token}`,
+    };
+
+    try {
+      await axios.put(`/api/schedules/${_id}`, {}, { headers });
+      dispatch(getSchedules(dayjs(value).format('YYYY-MM-DD')));
+    } catch (error) {}
   };
 
   return (
@@ -82,6 +95,7 @@ const ScheduleList = () => {
                     course={item.course}
                     date={date}
                     key={item._id}
+                    handleClick={() => handleAttendClass(item._id)}
                   />
                 ))}
               </div>

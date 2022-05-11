@@ -10,6 +10,7 @@ import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import AddAttendance from './components/AddAttendance';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />}>
             <Route index element={<DashboardHome />} />
+            <Route path="addattendance" element={<AddAttendance />} />
             <Route path="schedulelist" element={<ScheduleList />} />
             <Route path="myschedule" element={<MySchedule />} />
             <Route path="forum" element={<Forum />} />

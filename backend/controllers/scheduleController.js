@@ -94,7 +94,7 @@ const attendClass = asyncHandler(async (req, res) => {
   const updatedSchedule = await ScheduleDetail.findById(req.params.id);
   const updatedUsers = await User.findById(req.user._id);
   // console.log(schedule, req.user._id);
-  res.status(200).json({ updatedSchedule, updatedUsers });
+  res.status(200).json({ updatedSchedule });
 });
 
 // @desc    Post schedule

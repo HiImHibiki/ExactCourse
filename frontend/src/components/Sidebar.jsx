@@ -7,6 +7,7 @@ import forum from '../assets/forum.png';
 import event from '../assets/event.png';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import usericon from '../assets/usericon.png';
 
 const links = [
   { to: '/dashboard', label: 'Dashboard', icon: home },
@@ -26,7 +27,9 @@ const Sidebar = () => {
         Exact<span className="text-white">Course</span>
       </div>
       <div className="flex gap-3 px-5 py-5">
-        <div className="h-14 w-14 rounded-full bg-gray-400" />
+        <div className="h-14 w-14 rounded-full ">
+          <img src={usericon} alt="" />
+        </div>
         <div className="text-white">
           <h4>{user && user.name}</h4>
           <div className="flex items-center gap-1">

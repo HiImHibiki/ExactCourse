@@ -28,7 +28,7 @@ npm run dev -> concurrently (backend & frontend)
 
 * Website: https://github.com/HiImHibiki
 * Github: [@HiImHibiki](https://github.com/HiImHibiki)
-* LinkedIn: [@Mario Rufisanto](https://linkedin.com/in/Mario Rufisanto)
+* LinkedIn: [@Mario Rufisanto](https://www.linkedin.com/in/mario-rufisanto-a8817a202/)
 
 ## Show your support
 

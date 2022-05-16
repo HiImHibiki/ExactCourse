@@ -17,7 +17,9 @@ npm install
 ## Usage
 
 ```sh
-npm run dev
+npm run server -> backend
+npm run client -> frontend
+npm run dev -> concurrently (backend & frontend)
 ```
 
 ## Author

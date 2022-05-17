@@ -19,11 +19,11 @@ Exact course is a web application that is used by students and mentors as a lear
 
 ### Built With
 
-- [**Backend**](./mern-tutorial/backend/)
+- [**Backend**](./backend/)
   - [MongoDB](https://www.mongodb.com/)
   - [Mongoose](https://mongoosejs.com/)
   - [Express](https://expressjs.com/)
-- [**Frontend**](./mern-tutorial/frontend/)
+- [**Frontend**](./frontend/)
   - [React](https://reactjs.org/)
 
 ## Install
